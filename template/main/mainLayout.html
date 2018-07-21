@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static from staticfiles %}
+{% load customer_tags %}
+
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'Images/logo.png' %}">
+
+
+    <link href="{% static 'Content/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'Content/tree-control.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'scripts/Core/angular-material.min.css' %}">
+    <link href="{% static 'scripts/iconfont/material-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'Content/mainContent.css' %}" rel="stylesheet">
+
+    <script src="{% static 'scripts/Common/common.js' %}"></script>
+    <script src="{% static 'scripts/Core/jquery-1.12.4.min.js' %}"></script>
+    <!--<script src="{% static 'Scripts/Core/angular.min.js' %}" ></script>-->
+    <script src="{% static 'scripts/Core/bootstrap.min.js' %}"></script>
+        <script src="{% static 'scripts/Core/angular.min.js'%}"></script>
+    <script src="{% static 'scripts/Core/angular-route.min.js'%}"></script>
+    <script src="{% static 'scripts/Core/angular-animate.min.js'%}"></script>
+    <script src="{% static 'scripts/Core/angular-aria.min.js'%}"></script>
+    <script src="{% static 'scripts/Core/angular-messages.min.js'%}"></script>
+    <script src="{% static 'scripts/Core/angular-material.min.js'%}"></script>
+
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>-->
+    <script src="{% static 'scripts/Core/ui-bootstrap-tpls-2.5.0.min.js' %}"></script>
+    <script src="{% static 'scripts/Core/angular-tree-control.js' %}"></script>
+    <script src="{% static 'scripts/Core/context-menu.js' %}"></script>
+    <script src="{% static 'scripts/Common/angularCommon.js' %}"></script>
+<!--
+     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNAhWk5hntX2obVvFsO6lUIms_hY3BzIs"></script>
+-->
+    <base href="/">
+
+</head>
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 50px;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    left: 0;
+    background-color: #175165;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+</style>
+<body>
+{% any_function as menus %}
+{% if menus %}
+<div class="container-fluid">
+    <div class="row">
+    <div class="sidenav">
+  <a href="#"> </a>
+
+       <div align="center"> <md-button ng-click="save_dtl(status_rec,m)"> <i class="material-icons" style="color: white;font-size:">dashboard</i></md-button></div>
+       <div align="center"> <md-button ng-click="save_dtl(status_rec,m)"> <i class="material-icons" style="color: white;">assessment</i></md-button></div>
+       <div align="center"> <md-button ng-click="save_dtl(status_rec,m)"> <i class="material-icons" style="color: white;">payment</i></md-button></div>
+       <div align="center"> <md-button ng-click="save_dtl(status_rec,m)"> <i class="material-icons" style="color: white;">question_answer</i></md-button></div>
+       <div align="center"> <md-button ng-click="save_dtl(status_rec,m)"> <i class="material-icons" style="color: white;">chat</i></md-button></div>
+
+    </div>
+
+        <nav class="navbar  navbar-fixed-top nav-head-ui" >
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarm"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!--<a class="navbar-brand" href="/welcome" style="padding: 1px 5px;">-->
+                        <!--<img src="/static/Images/.png"  style="width: 205px;height: 50px;"-->
+                           <!--&gt;</a>-->
+                </div>
+
+
+
+                <!--ANGULAR-->
+                <div id="navbarm" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        {% for menu in menus|filter_parent %}
+                        <li class="dropdown">
+                            <a href="{{ menu.menu_link }}" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">
+                                {{ menu.menu_name }}
+                                <span class="caret"></span></a>
+                            {% if menu.menu_gid|checkLength:menus %}
+                            <ul class="dropdown-menu" style="z-index:100;">
+                                {% for subMenu in menu.menu_gid|filter_children:menus %}
+                                <li class="dropdown-submenu">
+                                    {% if subMenu.menu_gid|checkLength:menus %}
+                                    <a href="{{ subMenu.menu_link }}">{{ subMenu.menu_name }}
+                                        <span class="caret" style="transform:rotate(-90deg)"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        {% for subSMenu in subMenu.menu_gid|filter_children:menus %}
+                                        <li>
+                                            <a href="{{ subSMenu.menu_link }}">
+                                                {{ subSMenu.menu_name }}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                    <a href="{{ subMenu.menu_link }}">{{ subMenu.menu_name }}
+                                    </a>
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false">
+
+                                <span class="caret"></span>
+                                <ul class="dropdown-menu" style="z-index:100;">
+                                    <li><a> {{ request.session.Emp_name }}</a></li>
+                                    <li><a href="../changePassword">Change Password</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="../">Logout</a></li>
+                                </ul>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+    <div class="row pagger-fixed-top">
+
+    </div>
+
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+<button  id="scrollTop"  class="scrollTop buttonscroll"
+      title="Click to top"
+      data-toggle="tooltip" data-placement="left"><i class="material-icons">keyboard_arrow_up</i>
+</button>
+</div>
+<footer class="navbar-default navbar-fixed-bottom text-center nav-footer-ui ">
+    <p>&copy; 2018 -abc Pvt Ltd. </p>
+</footer>
+<script>
+
+$(document).ready(function(){
+ $(window).scroll(function () {
+        if ($(this).scrollTop() > 50) {
+            $('#scrollTop').fadeIn();
+        } else {
+            $('#scrollTop').fadeOut();
+        }
+    });
+    // scroll body to 0px on click
+    $('#scrollTop').click(function () {
+        $('#scrollTop').tooltip('hide');
+        $('body,html').animate({
+            scrollTop: 0
+        },'fast');
+        return false;
+    });
+
+    $('#scrollTop').tooltip('show');
+
+});
+
+var watchID = null;
+    if( navigator.geolocation )
+	{
+		var optn = {
+            enableHighAccuracy: true,
+			timeout: Infinity,
+			maximumAge: 0
+		};
+		 navigator.geolocation.watchPosition(position_success,  optn);
+	}
+
+	else
+	 $("p").html("HTML5 Not Supported");
+
+    function position_success(position)
+    {
+        var datalist1 ={latitude:position.coords.latitude,longitude:position.coords.longitude};
+        var datalist =JSON.stringify(datalist1);
+        $.ajax({
+            type: "GET",
+            url: "setposition",
+            dataType: 'json',
+            data: {details:datalist},
+            success: setposition
+        });
+    }
+
+    function setposition(data){
+
+    }
+
+    function fail(error)
+    {
+        var errorType={
+            0:"Unknown Error",
+            1:"Permission denied by the user",
+            2:"Position of the user not available",
+            3:"Request timed out"
+        };
+
+        var errMsg = errorType[error.code];
+        if(error.code == 0 || error.code == 2){
+            errMsg = errMsg+" - "+error.message;
+        }
+        alert(errMsg);
+    }
+</script>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 style="font-size:100px;">
+                404
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h5 style="font-size:20px;">
+                OOPS, We can't find the page.! (or) Session expired.!
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a class="btn" style="color: #fff;background-color: #2196F3;border-color: #2196F3;" href="../">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+</body>
+
+</html>
